@@ -4,13 +4,53 @@ interface RepositoriesState {
   data: string[];
 }
 
-const reducer = (state: RepositoriesState, action: any) => {
+interface SearchRepositoriesAction {
+  type: ActionType.SEARCH_REPOSITORIES;
+}
+
+interface SearchRepositoriesSuccessAction {
+  type: ActionType.SEARCH_REPOSITORIES_SUCCESS;
+  payload: string[];
+}
+
+interface SearchRepositoriesErrorAction {
+  type: ActionType.SEARCH_REPOSITORIES_ERROR;
+  payload: string;
+}
+
+// type union which can be used inside our app
+type Action =
+  | SearchRepositoriesAction
+  | SearchRepositoriesSuccessAction
+  | SearchRepositoriesErrorAction;
+
+//   now we can use the enum to access the different types of strings
+enum ActionType {
+  SEARCH_REPOSITORIES = 'search_repositories',
+  SEARCH_REPOSITORIES_SUCCESS = 'search_repositories_success',
+  SEARCH_REPOSITORIES_ERROR = 'search_repositories_error',
+}
+
+const reducer = (
+  state: RepositoriesState,
+  action: Action
+): RepositoriesState => {
+  // action
+  //     // this is a typeguard
+  // if (action.type === 'search_repositories_success') {
+  //     // 100% certaintay that 'action' satisfies the
+  //     // SearchRepositoriesSuccessAction interface.
+  //     action.payload
+  // }
+
+  // switch statements also act at type guards
   switch (action.type) {
-    case 'search_repositories':
+    case ActionType.SEARCH_REPOSITORIES:
       return { loading: true, error: null, data: [] };
-    case 'search_repositories_success':
+    //   100% certain that 'action' is SearchRepositoriesSuccessAction
+    case ActionType.SEARCH_REPOSITORIES_SUCCESS:
       return { loading: false, error: null, data: action.payload };
-    case 'search_repositories_error':
+    case ActionType.SEARCH_REPOSITORIES_ERROR:
       return { loading: false, error: action.payload, data: [] };
     default:
       return state;
