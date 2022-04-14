@@ -14,7 +14,6 @@ interface SearchRepositoriesErrorAction {
   payload: string;
 }
 
-// type union which can be used inside our app
 export type Action =
   | SearchRepositoriesAction
   | SearchRepositoriesSuccessAction
